@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">VKHackaton</string>
+    <string name="Registration">Регистрация</string>
+    <string name="Login">Вход</string>
+    <string name="Mail">Почта</string>
+    <string name="Password">Пароль</string>
+
 </resources>
