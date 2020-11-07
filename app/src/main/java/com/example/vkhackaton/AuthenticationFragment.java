@@ -19,7 +19,9 @@ public class AuthenticationFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_authentication, container, false);
         Toolbar toolbar = v.findViewById(R.id.toolbar);
         ((MainActivity) getActivity()).setSupportActionBar(toolbar);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.Login);
+        //((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.Registration);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+        //((MainActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.logo_main);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
         return v;

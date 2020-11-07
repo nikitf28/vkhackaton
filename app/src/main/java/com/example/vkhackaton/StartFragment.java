@@ -1,6 +1,8 @@
 package com.example.vkhackaton;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+
 import android.app.Fragment;
 import android.app.FragmentManager;
 
@@ -20,6 +22,11 @@ public class StartFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_start, container, false);
+        Toolbar toolbar = v.findViewById(R.id.toolbar);
+        ((MainActivity) getActivity()).setSupportActionBar(toolbar);
+        //((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.Registration);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle("");
+        //((MainActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.logo_main);
         Button goToLoginBTN = v.findViewById(R.id.goToLoginBTN);
         Button goToRegisterBTN = v.findViewById(R.id.goToRegisterBTN);
         goToLoginBTN.setOnClickListener(new View.OnClickListener() {

@@ -10,10 +10,15 @@
         <item name="colorControlNormal">@color/gray</item>
         <item name="android:textColor">@color/primaryTextColor</item>
         <item name="editTextStyle">@style/EditText</item>
+        <item name="toolbarStyle">@style/ToolBar</item>
+        <item name="android:toolbarStyle">@style/ToolBar</item>
     </style>
 
     <style name="EditText" parent="Widget.AppCompat.EditText">
         <item name="android:textColor">@color/primaryTextColor</item>
     </style>
-
+    <style name="ToolBar" parent="Widget.AppCompat.Toolbar">
+        <item name="background">@color/colorPrimary</item>
+        <item name="android:colorBackground">@color/colorPrimary</item>
+    </style>
 </resources>

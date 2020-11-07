@@ -2,7 +2,9 @@
 <resources>
     <color name="colorPrimary">#F3F3F3</color>
     <color name="colorPrimaryDark">#ED1C24</color>
-    <color name="colorAccent">#673D8D</color>
+    <color name="purple">#673D8D</color>
+    <color name="colorAccent">#ED1C24</color>
+    <color name="buttonPressed">#c4161d</color>
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#b8b8b8</color>
     <color name="gray">#333333</color>
