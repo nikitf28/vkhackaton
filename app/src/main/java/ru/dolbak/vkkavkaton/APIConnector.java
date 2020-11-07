@@ -32,8 +32,12 @@ public class APIConnector {
         Log.d("Internet", request.toString());
         Response response = client.newCall(request).execute();
         if(response.code() != 200) {
-            Log.d("Internet", response.toString());
-            throw new Exception("server request failed");
+            ResponseBody responseBody  = response.body();
+            JSONObject jObject = new JSONObject(responseBody.string());
+            if (jObject.getString("Code").equals("INVALID_PASSWORD")){
+                return "INVALID_PASSWORD";
+            }
+            return "ERROR";
         }
         ResponseBody responseBody  = response.body();
         // вроде бы такого быть не должно
@@ -43,5 +47,39 @@ public class APIConnector {
         JSONObject jObject = new JSONObject(responseBody.string());
         return jObject.getString("token");
     }
+
+
+    public static String register(String email, String pwd) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"email\": \"" + email + "\", \"password\": \"" + pwd + "\"}");
+        Request request = new Request.Builder()
+                .url(domain + "/authorize")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .build();
+        Log.d("Internet", request.toString());
+        Response response = client.newCall(request).execute();
+        if(response.code() != 200) {
+            ResponseBody responseBody  = response.body();
+            JSONObject jObject = new JSONObject(responseBody.string());
+            if (jObject.getString("Code").equals("INVALID_EMAIL")){
+                return "INVALID_EMAIL";
+            }
+            if (jObject.getString("Code").equals("EMAIL_TAKEN")){
+                return "EMAIL_TAKEN";
+            }
+            return "ERROR";
+        }
+        ResponseBody responseBody  = response.body();
+        // вроде бы такого быть не должно
+        if(responseBody  == null) {
+            return null;
+        }
+        JSONObject jObject = new JSONObject(responseBody.string());
+        return jObject.getString("token");
+    }
+
+
 
 }
