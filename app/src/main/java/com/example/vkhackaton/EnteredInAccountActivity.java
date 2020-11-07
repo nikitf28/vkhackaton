@@ -2,6 +2,7 @@ package com.example.vkhackaton;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -10,6 +11,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ public class EnteredInAccountActivity extends AppCompatActivity {
     private ActionBarDrawerToggle drawerToggle;
     List<Fragment> openedFragments = new ArrayList<Fragment>();
     boolean main;
+    EditProfileFragment editProfileFragment = new EditProfileFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,10 +104,32 @@ public class EnteredInAccountActivity extends AppCompatActivity {
         finish();
     }
 
+    public void confirmEditProfile(){
+        AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AlertDialog);
+        builder.setTitle(getString(R.string.changeProfileAlert));
+        builder.setMessage("");
+        builder.setCancelable(true);
+        builder.setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                editProfileFragment.setInfo();
+            }
+        });
+        builder.setNegativeButton(getString(R.string.no), new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
+    }
+
     public void selectDrawerItem(MenuItem menuItem) {
         // Create a new fragment and specify the fragment to show based on nav item clicked
         Fragment fragment = null;
         Class fragmentClass;
+        boolean change = true;
         switch(menuItem.getItemId()) {
             case R.id.home:
                 fragmentClass = HomeFragment.class;
@@ -119,30 +144,40 @@ public class EnteredInAccountActivity extends AppCompatActivity {
                 logout();
                 fragmentClass = HomeFragment.class;
                 break;
+            case R.id.confirmEditCode:
+                confirmEditProfile();
+                change = false;
+                fragmentClass = EditProfileFragment.class;
+                break;
             default:
                 fragmentClass = HomeFragment.class;
         }
 
-        try {
-            fragment = (Fragment) fragmentClass.newInstance();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (change) {
+            try {
+                fragment = (Fragment) fragmentClass.newInstance();
+                if (menuItem.getItemId() == R.id.editProfile){
+                    editProfileFragment = (EditProfileFragment)fragment;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            openedFragments.add(fragment);
+            // Insert the fragment by replacing any existing fragment
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+            fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
+            fragmentTransaction.replace(R.id.flContent, fragment).commit();
+
+            // Highlight the selected item has been done by NavigationView
+            menuItem.setChecked(true);
+            // Set action bar title
+            setTitle(menuItem.getTitle());
+
+            // Close the navigation drawer
+            invalidateOptionsMenu();
+            drawer.closeDrawers();
         }
-        openedFragments.add(fragment);
-        // Insert the fragment by replacing any existing fragment
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE);
-        fragmentTransaction.replace(R.id.flContent, fragment).commit();
-
-        // Highlight the selected item has been done by NavigationView
-        menuItem.setChecked(true);
-        // Set action bar title
-        setTitle(menuItem.getTitle());
-
-        // Close the navigation drawer
-        invalidateOptionsMenu();
-        drawer.closeDrawers();
     }
 
     public void closeFragment(){

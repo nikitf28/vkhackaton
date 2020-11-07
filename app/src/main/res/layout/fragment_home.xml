@@ -32,7 +32,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignTop="@+id/yourProfileImage"
             android:layout_marginTop="250dp"
-            android:text="Даниил"
+            android:text=""
             />
         <TextView
             android:id="@+id/yourSurname"
@@ -43,7 +43,7 @@
             android:layout_centerHorizontal="true"
             android:layout_alignTop="@+id/yourName"
             android:layout_marginTop="100dp"
-            android:text="Лазарев"/>
+            android:text=""/>
         <TextView
             android:id="@+id/yourBirthDate"
             android:layout_width="wrap_content"
@@ -53,6 +53,6 @@
             android:layout_alignTop="@id/yourSurname"
             android:layout_marginTop="100dp"
             android:textSize="25sp"
-            android:text="23.03.2004"/>
+            android:text=""/>
     </RelativeLayout>
 </LinearLayout>
