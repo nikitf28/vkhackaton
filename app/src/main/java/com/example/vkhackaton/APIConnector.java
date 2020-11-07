@@ -160,7 +160,7 @@ public class APIConnector {
         if(responseBody  == null) {
             return null;
         }
-        JSONObject jObject = new JSONObject(responseBody.string());
+        //JSONObject jObject = new JSONObject(responseBody.string());
         return new String[] {"OK", ""};
     }
 

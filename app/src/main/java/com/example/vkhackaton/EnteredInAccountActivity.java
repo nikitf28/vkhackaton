@@ -9,7 +9,9 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
@@ -37,6 +39,7 @@ public class EnteredInAccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setTheme(R.style.AppTheme);
         setContentView(R.layout.activity_entered_in_account);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.setDrawerLockMode(DrawerLayout.LOCK_MODE_UNLOCKED);
@@ -89,6 +92,10 @@ public class EnteredInAccountActivity extends AppCompatActivity {
     }
 
     public void logout(){
+        SharedPreferences prefs = getSharedPreferences(ApplicationConstants.PREFERENCES, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.remove(ApplicationConstants.TOKEN);
+        editor.commit();
         Intent intent = new Intent(this, MainActivity.class);
         startActivity(intent);
         finish();

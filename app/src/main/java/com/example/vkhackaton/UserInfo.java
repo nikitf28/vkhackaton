@@ -27,4 +27,6 @@ public class UserInfo {
         this.status = status;
         this.ERROR = ERROR;
     }
+
+
 }
