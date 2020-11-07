@@ -134,11 +134,13 @@ public class APIConnector {
         return userInfo;
     }
 
-    public static String[] profileMePost(String token, String FirstName, String LastName, String BirthDate) throws Exception {
+    public static String[] profileMePost(String token, String FirstName, String LastName, String BirthDate, String bio) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"FirstName\": \"" + FirstName + "\", \"LastName\": \"" + LastName + "\"" +
+                ", \"BirthDate\": \"" + BirthDate + "\", \"Bio\": \"" + bio + "\"}");
         Request request = new Request.Builder()
                 .url(domain + "/profile/me")
-                .get()
+                .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
                 .addHeader("X-Auth-Token", token)
