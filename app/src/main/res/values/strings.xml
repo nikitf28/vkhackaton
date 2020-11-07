@@ -4,5 +4,9 @@
     <string name="Login">Вход</string>
     <string name="Mail">Почта</string>
     <string name="Password">Пароль</string>
+    <string name="Friends">Друзья</string>
+    <string name="Home">Профиль</string>
+    <string name="navigation_drawer_open">Открытый</string>
+    <string name="navigation_drawer_close">Закрытый</string>
 
 </resources>

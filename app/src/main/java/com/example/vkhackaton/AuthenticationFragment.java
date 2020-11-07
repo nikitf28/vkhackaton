@@ -9,6 +9,7 @@ package com.example.vkhackaton;
         import android.view.LayoutInflater;
         import android.view.View;
         import android.view.ViewGroup;
+        import android.widget.Button;
 
 public class AuthenticationFragment extends Fragment {
 
@@ -24,6 +25,13 @@ public class AuthenticationFragment extends Fragment {
         //((MainActivity) getActivity()).getSupportActionBar().setIcon(R.drawable.logo_main);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         ((MainActivity) getActivity()).getSupportActionBar().setDisplayShowHomeEnabled(true);
+        Button loginBTN = v.findViewById(R.id.loginBTN);
+        loginBTN.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((MainActivity) getActivity()).logined();
+            }
+        });
         return v;
     }
 }
