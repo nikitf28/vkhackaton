@@ -6,7 +6,14 @@
     <string name="Password">Пароль</string>
     <string name="Friends">Друзья</string>
     <string name="Home">Профиль</string>
+    <string name="EditProfile">Редактировать профиль</string>
     <string name="navigation_drawer_open">Открытый</string>
     <string name="navigation_drawer_close">Закрытый</string>
+    <string name="Confirm">Подтвердить</string>
+    <string name="Logout">Выйти</string>
+    <string name="Set">Применить</string>
+    <string name="Name">Имя</string>
+    <string name="Surname">Фамилия</string>
+    <string name="DateOfBirth">Дата рождения</string>
 
 </resources>

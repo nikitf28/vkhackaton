@@ -81,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
                 closeFragment();
                 return(true);
         }
-
         return(super.onOptionsItemSelected(item));
     }
 

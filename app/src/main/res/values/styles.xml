@@ -12,6 +12,7 @@
         <item name="editTextStyle">@style/EditText</item>
         <item name="toolbarStyle">@style/ToolBar</item>
         <item name="android:toolbarStyle">@style/ToolBar</item>
+        <item name="android:listDivider">@color/lightergray</item>
 
         <item name="listPreferredItemHeightSmall">60dp</item>
     </style>

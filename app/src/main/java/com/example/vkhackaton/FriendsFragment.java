@@ -16,6 +16,7 @@ public class FriendsFragment extends Fragment {
         Toolbar toolbar = v.findViewById(R.id.toolbar);
         toolbar.setTitle(R.string.Friends);
         ((EnteredInAccountActivity)getActivity()).setToolbar(toolbar);
+        ((EnteredInAccountActivity)getActivity()).getDrawerToggle().setToolbarNavigationClickListener(null);
         return v;
     }
     @Override

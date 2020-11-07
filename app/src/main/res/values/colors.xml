@@ -8,4 +8,6 @@
     <color name="primaryTextColor">#333333</color>
     <color name="secondaryTextColor">#b8b8b8</color>
     <color name="gray">#333333</color>
+    <color name="lightergray">#c2c2c2</color>
+    <color name="whitePressed">#e6e6e6</color>
 </resources>

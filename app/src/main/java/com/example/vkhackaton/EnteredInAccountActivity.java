@@ -9,9 +9,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Debug;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,7 +31,8 @@ public class EnteredInAccountActivity extends AppCompatActivity {
     private Toolbar toolbar;
     private NavigationView nvDrawer;
     private ActionBarDrawerToggle drawerToggle;
-
+    List<Fragment> openedFragments = new ArrayList<Fragment>();
+    boolean main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,7 @@ public class EnteredInAccountActivity extends AppCompatActivity {
         // Find our drawer view
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        openedFragments.add(new HomeFragment());
         fragmentTransaction.replace(R.id.flContent, new HomeFragment()).commit();
         /*if(toolbar!=null){
         drawerToggle = new ActionBarDrawerToggle(
@@ -55,18 +59,39 @@ public class EnteredInAccountActivity extends AppCompatActivity {
                 return false;
             }
         });
+        getSupportFragmentManager().addOnBackStackChangedListener(mOnBackStackChangedListener);
 
     }
     public void setToolbar(Toolbar toolbar) {
         if(toolbar != null) {
             setSupportActionBar(toolbar);
-            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+            drawerToggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-            drawer.setDrawerListener(toggle);
-            toggle.syncState();
+            drawer.setDrawerListener(drawerToggle);
+            drawerToggle.syncState();
         } else {
             drawer.setDrawerListener(null);
         }
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+            closeFragment();
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
+
+    public ActionBarDrawerToggle getDrawerToggle(){
+        return drawerToggle;
+    }
+
+    public void logout(){
+        Intent intent = new Intent(this, MainActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     public void selectDrawerItem(MenuItem menuItem) {
@@ -80,6 +105,13 @@ public class EnteredInAccountActivity extends AppCompatActivity {
             case R.id.friends:
                 fragmentClass = FriendsFragment.class;
                 break;
+            case R.id.editProfile:
+                fragmentClass = EditProfileFragment.class;
+                break;
+            case R.id.logout:
+                logout();
+                fragmentClass = HomeFragment.class;
+                break;
             default:
                 fragmentClass = HomeFragment.class;
         }
@@ -89,7 +121,7 @@ public class EnteredInAccountActivity extends AppCompatActivity {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
+        openedFragments.add(fragment);
         // Insert the fragment by replacing any existing fragment
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -106,14 +138,38 @@ public class EnteredInAccountActivity extends AppCompatActivity {
         drawer.closeDrawers();
     }
 
+    public void closeFragment(){
+        if (openedFragments.size() > 1){
+            openedFragments.remove(openedFragments.size()-1);
+            FragmentManager fragmentManager;
+            FragmentTransaction fragmentTransaction;
+            FragmentManager _fragmentManager = getSupportFragmentManager();
+            FragmentTransaction _fragmentTransaction = _fragmentManager.beginTransaction();
+            _fragmentTransaction.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_CLOSE);
+            _fragmentTransaction.replace(R.id.flContent, openedFragments.get(openedFragments.size()-1)).commit();
+        }else{
+            finish();
+        }
+    }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Log.d("omygod", "s");
-        if (drawerToggle.onOptionsItemSelected(item)){
-            selectDrawerItem(item);
-            return true;
+        selectDrawerItem(item);
+        return true;
+    }
+
+    private FragmentManager.OnBackStackChangedListener
+            mOnBackStackChangedListener = new FragmentManager.OnBackStackChangedListener() {
+        @Override
+        public void onBackStackChanged() {
+            syncActionBarArrowState();
         }
-        return super.onOptionsItemSelected(item);
+    };
+
+    private void syncActionBarArrowState() {
+        int backStackEntryCount =
+                getSupportFragmentManager().getBackStackEntryCount();
+        drawerToggle.setDrawerIndicatorEnabled(backStackEntryCount == 0);
     }
 
 }
