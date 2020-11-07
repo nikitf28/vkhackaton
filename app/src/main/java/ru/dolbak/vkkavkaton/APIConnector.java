@@ -20,7 +20,7 @@ public class APIConnector {
     private static Gson gson = new Gson();
     public static String domain = "http://alpha.rfnull.com:8080";
 
-    public static String authorize(String email, String pwd) throws Exception {
+    public static String[] authorize(String email, String pwd) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"email\": \"" + email + "\", \"password\": \"" + pwd + "\"}");
         Request request = new Request.Builder()
@@ -35,9 +35,9 @@ public class APIConnector {
             ResponseBody responseBody  = response.body();
             JSONObject jObject = new JSONObject(responseBody.string());
             if (jObject.getString("Code").equals("INVALID_PASSWORD")){
-                return "INVALID_PASSWORD";
+                return new String[] {"ERROR", "INVALID_PASSWORD"};
             }
-            return "ERROR";
+            return new String[] {"ERROR", "unknown error"};
         }
         ResponseBody responseBody  = response.body();
         // вроде бы такого быть не должно
@@ -45,11 +45,11 @@ public class APIConnector {
             return null;
         }
         JSONObject jObject = new JSONObject(responseBody.string());
-        return jObject.getString("token");
+        return new String[] {"token", jObject.getString("token")};
     }
 
 
-    public static String register(String email, String pwd) throws Exception {
+    public static String[] register(String email, String pwd) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
         RequestBody body = RequestBody.create(mediaType, "{\"email\": \"" + email + "\", \"password\": \"" + pwd + "\"}");
         Request request = new Request.Builder()
@@ -64,12 +64,12 @@ public class APIConnector {
             ResponseBody responseBody  = response.body();
             JSONObject jObject = new JSONObject(responseBody.string());
             if (jObject.getString("Code").equals("INVALID_EMAIL")){
-                return "INVALID_EMAIL";
+                return new String[] {"ERROR", "INVALID_EMAIL"};
             }
             if (jObject.getString("Code").equals("EMAIL_TAKEN")){
-                return "EMAIL_TAKEN";
+                return new String[] {"ERROR", "EMAIL_TAKEN"};
             }
-            return "ERROR";
+            return new String[] {"ERROR", "unknown error"};
         }
         ResponseBody responseBody  = response.body();
         // вроде бы такого быть не должно
@@ -77,7 +77,7 @@ public class APIConnector {
             return null;
         }
         JSONObject jObject = new JSONObject(responseBody.string());
-        return jObject.getString("token");
+        return new String[] {"token", jObject.getString("token")};
     }
 
 
