@@ -3,16 +3,17 @@ package ru.dolbak.vkkavkaton;
 import android.graphics.Bitmap;
 
 public class UserInfo {
+    String ID;
     String status;
     String ERROR = "NONE";
     String firstName;
     String lastName;
     String age;
     String bio;
-    Bitmap[] pictures;
+    Picture[] pictures;
     String[] tags;
 
-    public UserInfo(String status, String firstName, String lastName, String age, String bio, Bitmap[] pictures, String[] tags) {
+    public UserInfo(String status, String ID, String firstName, String lastName, String age, String bio, Picture[] pictures, String[] tags) {
         this.status = status;
         this.firstName = firstName;
         this.lastName = lastName;

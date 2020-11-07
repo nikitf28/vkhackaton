@@ -116,12 +116,13 @@ public class APIConnector {
         }
         JSONObject jObject = new JSONObject(responseBody.string());
         JSONArray base64Images = jObject.getJSONArray("Pictures");
-        Bitmap[] bitmaps = new Bitmap[base64Images.length()];
+        Picture[] pictures = new Picture[base64Images.length()];
         for (int i = 0; i < base64Images.length(); i++){
-            String base64 = base64Images.getString(i);
-            byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
-            Bitmap bitmap = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
-            bitmaps[i] = bitmap;
+            JSONObject pictureJSON = base64Images.getJSONObject(i);
+            String picID = pictureJSON.getString("ID");
+            boolean isPrimary = pictureJSON.getBoolean("isPrimary");
+            Picture picture = new Picture(picID, isPrimary);
+            pictures[i] = picture;
         }
         JSONArray jsonTags = jObject.getJSONArray("Tags");
         String[] tags = new String[jsonTags.length()];
@@ -129,8 +130,8 @@ public class APIConnector {
             tags[i] = jsonTags.getString(i);
         }
 
-        UserInfo userInfo = new UserInfo("OK", jObject.getString("FirstName"), jObject.getString("LastName"),
-                jObject.getString("Age"), jObject.getString("Bio"), bitmaps, tags);
+        UserInfo userInfo = new UserInfo("OK", jObject.getString("ID"), jObject.getString("FirstName"), jObject.getString("LastName"),
+                jObject.getString("Age"), jObject.getString("Bio"), pictures, tags);
         return userInfo;
     }
 
@@ -165,7 +166,7 @@ public class APIConnector {
     }
 
 
-    public static String[] profileMePostTags(String token, String[] tags) throws Exception {
+    /*public static String[] profileMePostTags(String token, String[] tags) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
         String json = "{\"Tags\": [";
         for (int i = 0; i < tags.length; i++){
@@ -195,7 +196,7 @@ public class APIConnector {
         }
         JSONObject jObject = new JSONObject(responseBody.string());
         return new String[] {"OK", ""};
-    }
+    }*/
 
 
 
