@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -165,20 +167,44 @@ public class APIConnector {
         return new String[] {"OK", ""};
     }
 
-
-    /*public static String[] profileMePostTags(String token, String[] tags) throws Exception {
+    public static Picture getImage(String token, String ID) throws Exception {
         MediaType mediaType = MediaType.parse("application/json");
-        String json = "{\"Tags\": [";
-        for (int i = 0; i < tags.length; i++){
-            json += "\"" + tags[i] + "\"";
-            if (tags.length - 1 != i){
-                json += ",";
-            }
-            json += "]}";
-        }
-        RequestBody body = RequestBody.create(mediaType, json);
         Request request = new Request.Builder()
-                .url(domain + "/profile/me")
+                .url(domain + "/image/" + ID)
+                .get()
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("X-Auth-Token", token)
+                .build();
+        Log.d("Internet", request.toString());
+        Response response = client.newCall(request).execute();
+        if(response.code() != 200) {
+            ResponseBody responseBody  = response.body();
+            JSONObject jObject = new JSONObject(responseBody.string());
+            return new Picture(ID, jObject.getString("Code"));
+        }
+        ResponseBody responseBody  = response.body();
+        // вроде бы такого быть не должно
+        if(responseBody  == null) {
+            return null;
+        }
+        JSONObject jObject = new JSONObject(responseBody.string());
+        String base64 = jObject.getString("Data");
+        byte[] decodedString = Base64.decode(base64, Base64.DEFAULT);
+        Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
+        Picture picture = new Picture(ID, decodedByte);
+        return picture;
+    }
+
+    public static String[] imagePost(String token, Bitmap bitmap) throws Exception {
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 80, byteArrayOutputStream);
+        byte[] byteArray = byteArrayOutputStream .toByteArray();
+        String base64 = Base64.encodeToString(byteArray, Base64.DEFAULT);
+        MediaType mediaType = MediaType.parse("application/json");
+        RequestBody body = RequestBody.create(mediaType, "{\"Data\": \"" + base64 + "\"}");
+        Request request = new Request.Builder()
+                .url(domain + "/profile/me/picture")
                 .post(body)
                 .addHeader("content-type", "application/json")
                 .addHeader("accept", "application/json")
@@ -187,17 +213,17 @@ public class APIConnector {
         Log.d("Internet", request.toString());
         Response response = client.newCall(request).execute();
         if(response.code() != 200) {
-            return new String[] {"ERROR", "unknown error"};
+            ResponseBody responseBody  = response.body();
+            JSONObject jObject = new JSONObject(responseBody.string());
+            return new String[] {"ERROR", jObject.getString("Code")};
         }
         ResponseBody responseBody  = response.body();
         // вроде бы такого быть не должно
         if(responseBody  == null) {
             return null;
         }
-        JSONObject jObject = new JSONObject(responseBody.string());
         return new String[] {"OK", ""};
-    }*/
-
+    }
 
 
 
