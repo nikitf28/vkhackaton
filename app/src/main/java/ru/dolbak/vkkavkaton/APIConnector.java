@@ -165,6 +165,39 @@ public class APIConnector {
     }
 
 
+    public static String[] profileMePostTags(String token, String[] tags) throws Exception {
+        MediaType mediaType = MediaType.parse("application/json");
+        String json = "{\"Tags\": [";
+        for (int i = 0; i < tags.length; i++){
+            json += "\"" + tags[i] + "\"";
+            if (tags.length - 1 != i){
+                json += ",";
+            }
+            json += "]}";
+        }
+        RequestBody body = RequestBody.create(mediaType, json);
+        Request request = new Request.Builder()
+                .url(domain + "/profile/me")
+                .post(body)
+                .addHeader("content-type", "application/json")
+                .addHeader("accept", "application/json")
+                .addHeader("X-Auth-Token", token)
+                .build();
+        Log.d("Internet", request.toString());
+        Response response = client.newCall(request).execute();
+        if(response.code() != 200) {
+            return new String[] {"ERROR", "unknown error"};
+        }
+        ResponseBody responseBody  = response.body();
+        // вроде бы такого быть не должно
+        if(responseBody  == null) {
+            return null;
+        }
+        JSONObject jObject = new JSONObject(responseBody.string());
+        return new String[] {"OK", ""};
+    }
+
+
 
 
 }
