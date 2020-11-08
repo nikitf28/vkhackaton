@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString(ApplicationConstants.TOKEN, "");
         if (!token.equals("")){
-            logined();
+            login();
         }
         /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
@@ -97,9 +97,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    Log.d("hmmm", "hmmm");
                     final UserInfo user = APIConnector.profileMeGet(token);
-                    Log.d("userstatuserror", user.ERROR);
                     if (user.status.equals("OK")){
                         v.post(new Runnable() {
                             @Override

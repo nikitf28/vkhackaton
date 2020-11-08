@@ -35,7 +35,6 @@
             android:layout_height="wrap_content">
             <EditText
                 android:inputType="textShortMessage"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:id="@+id/nameET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -45,7 +44,6 @@
                 android:hint="@string/Name"/>
             <EditText
                 android:inputType="textShortMessage"
-                android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:id="@+id/surnameET"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
