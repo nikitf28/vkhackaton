@@ -46,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         sharedPreferences = getSharedPreferences(ApplicationConstants.PREFERENCES, MODE_PRIVATE);
         token = sharedPreferences.getString(ApplicationConstants.TOKEN, "");
         if (!token.equals("")){
-            login();
+            logined();
         }
         /*Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);*/
